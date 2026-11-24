@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090711">
+  <meta name="description" content="DS AI — seu espaço para pensar, programar e criar.">
+  <title>DS AI — Think smarter. Create more.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">D</div><div class="brand-copy"><div class="brand-name">DS AI</div><div class="brand-sub">THINK SMARTER</div></div></div>
+    <button class="new-chat" id="newChat"><span class="new-text">Nova conversa</span><span>＋</span></button>
+    <div class="nav-label">WORKSPACE</div>
+    <nav class="nav">
+      <button class="active" data-page="chat"><span class="ico">✦</span><span class="nav-text">AI Chat</span></button>
+      <button data-page="code"><span class="ico">⌘</span><span class="nav-text">Code Assistant</span></button>
+      <button data-page="writer"><span class="ico">✎</span><span class="nav-text">AI Writer</span></button>
+      <button data-page="images"><span class="ico">▧</span><span class="nav-text">AI Images</span></button>
+      <button data-page="history"><span class="ico">◷</span><span class="nav-text">Histórico</span></button>
+      <button data-page="settings"><span class="ico">⚙</span><span class="nav-text">Configurações</span></button>
+    </nav>
+    <div class="side-bottom">
+      <div class="status"><div class="status-line"><span class="dot" id="statusDot"></span><span id="statusText">API configurada</span></div><small id="statusHint">DS AI usa o Worker fixo do projeto.</small></div>
+      <div class="profile"><div class="avatar">D</div><div class="profile-copy"><strong>DS User</strong><small>Workspace pessoal</small></div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="crumb" id="crumb">✦ &nbsp; AI Chat</div>
+      <div class="top-actions"><button class="tiny-btn" id="clearCurrent">Limpar chat</button><button class="tiny-btn" id="settingsShortcut" aria-label="Configurações">⚙</button></div>
+    </header>
+
+    <div class="content">
+      <section class="page active" id="page-chat">
+        <div class="welcome" id="welcome">
+          <div class="eyebrow">✦ &nbsp; YOUR AI WORKSPACE</div>
+          <h1>Olá! O que vamos<br><span class="gradient">criar hoje?</span></h1>
+          <p>Seu espaço para pensar, programar, escrever e transformar ideias em projetos. Pergunte qualquer coisa para começar.</p>
+        </div>
+        <div class="cards" id="suggestions">
+          <button class="suggestion" data-prompt="Me ajude a criar um projeto web moderno com HTML, CSS e JavaScript."><span class="s-icon">✧</span><strong>Criar um projeto</strong><small>Transforme uma ideia em algo real.</small></button>
+          <button class="suggestion" data-prompt="Explique este código passo a passo e me ajude a melhorá-lo:"><span class="s-icon">⌘</span><strong>Entender código</strong><small>Aprenda e resolva problemas de programação.</small></button>
+          <button class="suggestion" data-prompt="Me dê ideias criativas para um projeto digital que eu possa desenvolver."><span class="s-icon">☼</span><strong>Ter novas ideias</strong><small>Encontre inspiração para seu próximo projeto.</small></button>
+        </div>
+        <div class="chat-area" id="chatArea" aria-live="polite"></div>
+        <div class="composer-wrap">
+          <div class="composer">
+            <textarea id="prompt" rows="2" placeholder="Envie uma mensagem para o DS AI..." aria-label="Mensagem"></textarea>
+            <div class="composer-bottom"><span class="mode-label" id="modeLabel">✦ Modelo de IA · Chat</span><button class="send" id="sendBtn">Enviar ↗</button></div>
+          </div>
+          <div class="disclaimer">O DS AI pode cometer erros. Confira informações importantes.</div>
+        </div>
+      </section>
+
+      <section class="page" id="page-code">
+        <div class="page-heading">Code Assistant</div>
+        <p class="page-desc">Seu parceiro para entender, escrever e depurar código. Escolha uma sugestão ou envie sua dúvida pelo chat.</p>
+        <div class="tool-grid">
+          <article class="tool-card"><span class="tool-tag">LUA / ROBLOX</span><h3>Roblox Studio</h3><p>Ajuda com scripts Lua, interfaces, sistemas de jogo e depuração.</p><button class="secondary use-prompt" data-prompt="Você é meu assistente de programação Roblox Studio. Ajude com Luau, explique as mudanças e priorize código seguro e organizado. Minha dúvida é: ">Abrir no chat →</button></article>
+          <article class="tool-card"><span class="tool-tag">WEB DEVELOPMENT</span><h3>Desenvolvimento web</h3><p>HTML, CSS, JavaScript, responsividade e integração com APIs.</p><button class="secondary use-prompt" data-prompt="Atue como um assistente especialista em desenvolvimento web. Explique as decisões e forneça código organizado. Minha tarefa é: ">Abrir no chat →</button></article>
+          <article class="tool-card"><span class="tool-tag">DEBUG</span><h3>Encontrar erros</h3><p>Analise mensagens de erro e sugira correções explicadas.</p><button class="secondary use-prompt" data-prompt="Ajude a depurar este problema. Explique a causa provável e uma correção. Erro e código: ">Abrir no chat →</button></article>
+          <article class="tool-card"><span class="tool-tag">LEARNING</span><h3>Aprender programação</h3><p>Entenda conceitos com exemplos progressivos e claros.</p><button class="secondary use-prompt" data-prompt="Seja um tutor de programação. Explique de forma simples, com exemplos e pequenos passos. Quero aprender: ">Abrir no chat →</button></article>
+        </div>
+      </section>
+
+      <section class="page" id="page-writer">
+        <div class="page-heading">AI Writer</div>
+        <p class="page-desc">Crie, reescreva e organize textos com ajuda da inteligência artificial.</p>
+        <div class="tool-grid">
+          <article class="tool-card"><span class="tool-tag">CRIATIVIDADE</span><h3>Brainstorm</h3><p>Gere ideias para sites, jogos, vídeos e projetos.</p><button class="secondary use-prompt" data-prompt="Me ajude com um brainstorm. Gere ideias variadas, explique rapidamente cada uma e destaque as mais viáveis. Tema: ">Começar →</button></article>
+          <article class="tool-card"><span class="tool-tag">DESCRIÇÕES</span><h3>Descrição e apresentação</h3><p>Escreva descrições claras para projetos e publicações.</p><button class="secondary use-prompt" data-prompt="Crie uma descrição natural e bem organizada para este projeto. Projeto: ">Começar →</button></article>
+          <article class="tool-card"><span class="tool-tag">REVISÃO</span><h3>Melhorar texto</h3><p>Ajuste clareza, gramática e fluidez sem perder sua intenção.</p><button class="secondary use-prompt" data-prompt="Revise este texto mantendo meu jeito de escrever. Melhore clareza e gramática sem deixá-lo artificial: ">Começar →</button></article>
+          <article class="tool-card"><span class="tool-tag">RESUMOS</span><h3>Resumir conteúdo</h3><p>Transforme textos longos em explicações mais diretas.</p><button class="secondary use-prompt" data-prompt="Faça um resumo organizado e fácil de entender deste conteúdo: ">Começar →</button></article>
+        </div>
+      </section>
+
+      <section class="page" id="page-images">
+        <div class="page-heading">AI Images</div>
+        <p class="page-desc">Um espaço reservado para integrar geração de imagens em uma próxima etapa.</p>
+        <div class="settings-card"><div class="feature-icon">✧</div><h3>Crie imagens a partir de ideias</h3><p>A interface está preparada para receber um serviço de geração de imagens. Nesta versão, a geração ainda não está conectada. Não existe cobrança nem envio de prompt nesta área.</p><button class="secondary" disabled>Em breve</button></div>
+      </section>
+
+      <section class="page" id="page-history">
+        <div class="page-heading">Histórico</div><p class="page-desc">Suas conversas ficam salvas neste navegador.</p>
+        <div class="history-list" id="historyList"></div><button class="secondary history-delete" id="deleteHistory">Apagar todo o histórico</button>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="page-heading">Configurações</div>
+        <p class="page-desc">Conexão automática e informações do projeto.</p>
+        <div class="settings-card">
+          <label>Cloudflare Worker</label>
+          <div class="connection-url" id="workerAddress"></div>
+          <p>Este endereço está definido no projeto. O site usa essa URL automaticamente, sem precisar salvar configurações neste navegador.</p>
+          <div class="connection-state" id="connectionState">Conexão será testada ao enviar a primeira mensagem.</div>
+        </div>
+        <div class="settings-card"><label>Privacidade e segurança</label><p>O histórico desta versão fica no armazenamento local do navegador. As mensagens enviadas ao chat são encaminhadas ao Worker. Não coloque senhas, dados pessoais ou informações privadas nas conversas. Segredos e chaves devem ficar no Cloudflare Worker, nunca nesta página.</p></div>
+        <div class="settings-card"><label>Sobre o DS AI</label><p>Versão 1.1 · Interface organizada em arquivos separados. AI Chat, Code Assistant e AI Writer usam o mesmo serviço conectado ao Worker.</p></div>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>
