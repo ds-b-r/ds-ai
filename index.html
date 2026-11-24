@@ -155,6 +155,7 @@ button {
 }
 
 button:hover { background:#7c3aed; }
+button:disabled { opacity:.6; cursor:wait; }
 
 .toolbar {
   display:flex;
@@ -186,7 +187,6 @@ button:hover { background:#7c3aed; }
   border-radius:13px;
   overflow:hidden;
   min-height:430px;
-  position:relative;
 }
 
 .viewer iframe {
@@ -221,6 +221,18 @@ button:hover { background:#7c3aed; }
   margin-bottom:12px;
 }
 
+.viewer-message pre {
+  max-width:100%;
+  width:100%;
+  overflow:auto;
+  text-align:left;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  color:#c4b5fd;
+  font:12px/1.7 monospace;
+  margin-top:15px;
+}
+
 .notice {
   padding:12px 14px;
   margin-top:12px;
@@ -240,9 +252,7 @@ button:hover { background:#7c3aed; }
   margin-bottom:15px;
 }
 
-.history-head h2 {
-  font-size:17px;
-}
+.history-head h2 { font-size:17px; }
 
 .clear-btn {
   background:#272033;
@@ -323,7 +333,7 @@ footer {
 <main>
 
 <section class="hero">
-  <span class="tag">DS PROXY V2.0</span>
+  <span class="tag">DS PROXY V2.1</span>
   <h1>Explore com <span>DS.</span></h1>
   <p>
     Navegador experimental para páginas HTTPS,
@@ -369,9 +379,8 @@ footer {
   </div>
 
   <div class="notice" id="notice">
-    O DS Proxy usa incorporação de páginas. Alguns sites
-    bloqueiam esse recurso. Quando isso acontecer, a página
-    poderá não aparecer. Nenhum bloqueio será contornado.
+    Alguns sites bloqueiam incorporação. Quando isso
+    acontecer, o DS Proxy informará a limitação.
   </div>
 
 </section>
@@ -511,16 +520,13 @@ document.querySelectorAll(".tab").forEach(tab => {
 function getYouTubeId(url) {
   const host = url.hostname.replace(/^www\./, "");
 
-  if (
-    host === "youtu.be"
-  ) {
+  if (host === "youtu.be") {
     return url.pathname.split("/").filter(Boolean)[0] || null;
   }
 
   if (
     host === "youtube.com" ||
-    host === "m.youtube.com" ||
-    host === "youtube-nocookie.com"
+    host === "m.youtube.com"
   ) {
     if (url.pathname === "/watch") {
       return url.searchParams.get("v");
@@ -582,13 +588,10 @@ function showFrame(url, isYouTube = false) {
 
   viewer.appendChild(frame);
 
-  if (!isYouTube) {
-    document.getElementById("notice").textContent =
-      "Se a página não aparecer, o site pode bloquear incorporação por iframe. O DS Proxy não tenta contornar esse bloqueio.";
-  } else {
-    document.getElementById("notice").textContent =
-      "Vídeo exibido pelo player oficial incorporado do YouTube. Alguns vídeos não permitem reprodução incorporada.";
-  }
+  document.getElementById("notice").textContent =
+    isYouTube
+      ? "Player oficial do YouTube. Alguns vídeos podem não permitir reprodução incorporada."
+      : "Se a página não aparecer, o site pode bloquear incorporação por iframe. O DS Proxy não tenta contornar esse bloqueio.";
 }
 
 async function openAddress(addToHistory = true) {
@@ -654,7 +657,7 @@ async function openAddress(addToHistory = true) {
       }
 
       showFrame(
-        "https://www.youtube-nocookie.com/embed/" +
+        "https://www.youtube.com/embed/" +
         encodeURIComponent(youtubeId),
         true
       );
@@ -684,18 +687,11 @@ async function openAddress(addToHistory = true) {
         return;
       }
 
-      showMessage(
-        "Resposta da API",
-        body,
-        "📡"
-      );
+      showMessage("Resposta da API", body, "📡");
 
-      const viewer = document.getElementById("viewer");
-      const box = viewer.querySelector(".viewer-message");
+      const box = document.querySelector("#viewer .viewer-message");
 
       const pre = document.createElement("pre");
-      pre.style.cssText =
-        "max-width:100%;width:100%;overflow:auto;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;color:#c4b5fd;font:12px/1.7 monospace;margin-top:15px;";
 
       try {
         pre.textContent = JSON.stringify(JSON.parse(body), null, 2);
@@ -706,6 +702,7 @@ async function openAddress(addToHistory = true) {
       box.appendChild(pre);
 
       status.textContent = "API · Consulta concluída";
+
       document.getElementById("notice").textContent =
         "Resposta consultada pelo Cloudflare Worker. A API disponível neste servidor é limitada ao domínio de teste autorizado.";
 
@@ -736,7 +733,10 @@ async function openAddress(addToHistory = true) {
 
 function goBack() {
   if (!navigationStack.length) {
-    showMessage("Sem página anterior", "Ainda não há uma página anterior nesta sessão.");
+    showMessage(
+      "Sem página anterior",
+      "Ainda não há uma página anterior nesta sessão."
+    );
     return;
   }
 
